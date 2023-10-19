@@ -1,4 +1,5 @@
 from turtle import Turtle,Screen
+import random
 class Board:
     def __init__(self):
      self.t = Turtle()
@@ -6,9 +7,29 @@ class Board:
      self.t.penup()
      self.t.goto(-100,300)
      self.t.setheading(0)
-     self.tiles = [[1,2,3,4], [5,6,7,8],[9,10,11,12], [13,14,15,None]]
-    #  self.voidpos = self.find_void_position()
-          
+     self.tiles = self.random_tiles()
+
+    def num_of_inversions(self,lst):
+       inversion = 0 
+       for x in range(len(lst)):
+          for y in range(len(lst)):
+             if x > y and lst[x] < lst[y]:
+                inversion += 1
+       return inversion 
+
+
+    def random_tiles(self):
+       mytiles = [[], [], [], []]
+       tiles = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+       random.shuffle(tiles)
+       if self.num_of_inversions(tiles) % 2 == 0:
+          tiles[0], tiles[1] = tiles[1] ,tiles[0]
+       mytiles[0] = tiles[0:4] 
+       mytiles[1] = tiles[7:3:-1]
+       mytiles[2] = tiles[8:12]  
+       mytiles[3] = tiles[16:11:-1] + [None]
+       return mytiles
+                   
 
     def find_void_position(self):
         for i in range(len(self.tiles)):
@@ -74,8 +95,8 @@ screen.tracer(0)
 screen.listen()
 screen.onkeypress(fun= board.down, key= "Down" )
 screen.onkeypress(fun= board.up, key= "Up" )
-screen.onkeypress(fun= board.left, key= "Left" )
-screen.onkeypress(fun= board.right, key= "Right" )
+screen.onkeypress(fun= board.left, key= "Right" )
+screen.onkeypress(fun= board.right, key= "Left" )
 
 
 
